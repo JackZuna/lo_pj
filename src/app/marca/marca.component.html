@@ -1,4 +1,4 @@
-﻿{{titulo}}
+{{titulo}}
 <div>
   <button type='button' #alta (keyup.enter)="Alta()" (click)="Alta()">alta</button>
 
@@ -6,21 +6,34 @@
 </div>
   <br />
   <br />
-  <div *ngIf="MuestraForma">
-    <label>Nombre:</label>
-    <input type="text" [(ngModel)]="marcaSeleccionada.nombre">
-    <br />
-    <br />
-    <label>Color:</label>
-    <input type="text" [(ngModel)]="marcaSeleccionada.color">
-    <br />
-    <br />
-    <input type="file" #marcaimagen class="form-control" name="single" (change)="fileChange($event)"/>
-    <br />
-    <br />
-    <button type='button' #box (keyup.enter)="Guardar(marcaSeleccionada)" (click)="Guardar(marcaSeleccionada)">Guardar</button>
-  </div>
+  <form #mainForm="ngForm">
+    <div *ngIf="MuestraForma">
 
+      <label>Nombre:</label>
+      <input required minlength="2" type="text" id="nombre" name="nombre" #nombre="ngModel" [(ngModel)]="marcaSeleccionada.nombre">
+      <div [hidden]="nombre.valid || nombre.pristine">
+        nombre required
+      </div>
+      <br />
+      <br />
+
+      <label>Color:</label>
+      <input required minlength="4" type="text" id="color" name="color" #color="ngModel" [(ngModel)]="marcaSeleccionada.color">
+      <div [hidden]="color.valid || color.pristine">
+        color required
+      </div>
+      <br />
+      <br />
+
+      <input required type="file" id="marcaimagen" name="marcaimagen" #marcaimagen="ngModel" class="form-control" (change)="fileChange($event)" />
+      <div [hidden]="marcaimagen.valid || marcaimagen.pristine">
+       imagen required
+      </div>
+      <br />
+      <br />
+      <button type='button' #box [disabled]="!mainForm.form.valid" (keyup.enter)="Guardar(marcaSeleccionada)" (click)="Guardar(marcaSeleccionada)">Guardar</button>
+    </div>
+  </form>
 <br />
 <br />
 <br />
