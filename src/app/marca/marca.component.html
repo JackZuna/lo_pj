@@ -15,7 +15,7 @@
     <input type="text" [(ngModel)]="marcaSeleccionada.color">
     <br />
     <br />
-    <input type="file" #marcaimagen class="form-control" name="single" (change)="fileChange(marcaimagen)"/>
+    <input type="file" #marcaimagen class="form-control" name="single" (change)="fileChange($event)"/>
     <br />
     <br />
     <button type='button' #box (keyup.enter)="Guardar(marcaSeleccionada)" (click)="Guardar(marcaSeleccionada)">Guardar</button>

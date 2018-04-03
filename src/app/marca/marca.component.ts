@@ -2,7 +2,7 @@
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Marca } from '../models';
 import { UtilService } from '../util.service'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx'
 
 
@@ -22,13 +22,13 @@ export class MarcaComponent implements OnInit {
 	private baseUrl = "http://localhost:3000/marcas/get";  // web api URL
 	private baseUrlalta = "http://localhost:3000/marcas/alta";  // web api URL
 	private baseUrlbaja = "http://localhost:3000/marcas/baja";  // web api URL
-	private baseUrlmod = "http://localhost:3000/marcas/mod";  // web api URL
-
-	
+	private baseUrlmod = "http://localhost:3000/marcas/cambio";  // web api URL
+	//baseUrlmod
 
 
 	ngOnInit() {
 		this.getmarcasdb();
+		this.formData = new FormData();
 	}
 
 
@@ -41,45 +41,24 @@ export class MarcaComponent implements OnInit {
 	closeResult: string;
 	index: number ;
 	fileToUpload: File;
+	formData: FormData;
 
-	fileChange(input) {
-		this.readFiles(input.files);
-	}
-	readFile(file, reader, callback) {
-		reader.onload = () => {
-			callback(reader.result);
-			this.fileToUpload = reader.result;
-		}
-		reader.readAsDataURL(file);
-	}
-	readFiles(files, index = 0) {
-		let reader = new FileReader();
-		if (index in files) {
-			this.readFile(files[index], reader, (result) => {
-				var img = document.createElement("img");
-				img.src = result;
+	fileChange(event) {
+		let fileList: FileList = event.target.files;
+		if (fileList.length > 0) {
+			let file: File = fileList[0];
+			this.fileToUpload = fileList[0];
+			
+			this.formData.append('logo_principal', file, file.name);
+			let headers = new Headers();
+			/** In Angular 5, including the header Content-Type can invalidate your request */
 
-				this.readFiles(files, index + 1);
-			});
-		} else {
-			this.changeDetectorRef.detectChanges();
 		}
 	}
-
 
 
 	marcas: Marca[] = [];
 
-
-
-
-
-
-
-
-
-
-	
 	getmarcasdb() {
 		this.http.get<Marca[]>(this.baseUrl).subscribe(data => {
 			console.log(data[0].nombre);
@@ -88,20 +67,28 @@ export class MarcaComponent implements OnInit {
 			}
 		});	
 	}
-	public post(url){
-	const req = this.http.post(url,
-			{
-				id: this.newmarca.id,
-				nombre: this.newmarca.nombre,
-				color: this.newmarca.color,
-			    logo_principal: '1'
-		})
+
+	public post(url) {
+		console.log(this.newmarca);
+		this.formData.append('id', String(this.newmarca.id));
+		this.formData.append('nombre', this.newmarca.nombre);
+		this.formData.append('color', this.newmarca.color);
+
+
+		const req = this.http.post(url,  this.formData,
+			{				
+				headers: { 'Accept': 'application/json' }
+			})
 			.subscribe(
 			res => {
 				console.log(res);
+				this.formData = new FormData();
+
 			},
 			err => {
 				console.log("Error occured");
+				this.formData = new FormData();
+
 			}
 			);
 	}
