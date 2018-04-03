@@ -1,3 +1,4 @@
-﻿<los-header [appName]="globals.role"></los-header>
-<los-sidemenu [menus]="menus"></los-sidemenu>
-<los-footer></los-footer>
+﻿<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+
+<login *ngIf="!globals.logged"></login>
+<main *ngIf="globals.logged"></main>

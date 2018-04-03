@@ -1,0 +1,69 @@
+﻿{{titulo}}
+<div>
+  <button type='button' #alta (keyup.enter)="Alta()" (click)="Alta()">alta</button>
+
+
+</div>
+  <br />
+  <br />
+  <div *ngIf="MuestraForma">
+    <label>Nombre:</label>
+    <input type="text" [(ngModel)]="marcaSeleccionada.nombre">
+    <br />
+    <br />
+    <label>Color:</label>
+    <input type="text" [(ngModel)]="marcaSeleccionada.color">
+    <br />
+    <br />
+    <input type="file" #marcaimagen class="form-control" name="single" (change)="fileChange(marcaimagen)"/>
+    <br />
+    <br />
+    <button type='button' #box (keyup.enter)="Guardar(marcaSeleccionada)" (click)="Guardar(marcaSeleccionada)">Guardar</button>
+  </div>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<div>
+  <table>
+    <tr>
+      <td>nombre</td>
+      <td>color</td>
+      <td>opciones</td>
+
+    </tr>
+    <tr *ngFor="let marca of marcas">
+      <td>{{marca.nombre}}</td>
+      <td>{{marca.color}}</td>
+      <td>
+        <button type='button' #ideditar (keyup.enter)="editar(marca)" (click)="editar(marca)">editar</button>
+        <button type='button' #idbaja (keyup.enter)="baja(marca,content)" (click)="baja(marca,content)">baja</button>
+      </td>
+
+    </tr>
+
+  </table>
+
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header"style="background-color: red;">
+    <h4 class="modal-title" >Baja</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Realmente deasea dar de baja está marca?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('baja')">Si</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('cancel')">No</button>
+
+  </div>
+</ng-template>
+
