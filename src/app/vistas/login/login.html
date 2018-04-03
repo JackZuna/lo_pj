@@ -1,0 +1,12 @@
+﻿
+  
+  <label >Username:</label>
+  <input type="text" [(ngModel)]="username">
+ 
+  <label >Password:</label>
+  <input type="password" [(ngModel)]="password">
+  <button type='button' #box (keyup.enter)="onLogin()" (click)="onLogin()">Login</button>
+  {{globals.role}}
+{{clickMessage}}
+
+
