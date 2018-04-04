@@ -1,105 +1,103 @@
 ﻿import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Seccion } from '../models';
+import { UtilService } from '../util.service'
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs/Rx'
+
 
 @Component({
 	selector: 'app-seccion',
 	templateUrl: './seccion.component.html',
 	styleUrls: ['./seccion.component.css']
 })
+
 export class SeccionComponent implements OnInit {
-	constructor(
-		private modalService: NgbModal,
-		private changeDetectorRef: ChangeDetectorRef) { }
-	ngOnInit() { }
+
+	constructor(private modalService: NgbModal,
+		private changeDetectorRef: ChangeDetectorRef,
+		private http: HttpClient
+		, private utilService: UtilService
+	) { }
+
+	private baseUrl = "http://localhost:3000/seccion/get";  // web api URL
+	private baseUrlalta = "http://localhost:3000/seccion/alta";  // web api URL
+	private baseUrlbaja = "http://localhost:3000/seccion/baja";  // web api URL
+	private baseUrlmod = "http://localhost:3000/seccion/cambio";  // web api URL
+	//baseUrlmod
 
 
+	ngOnInit() {
+		this.getseccionsdb();
+		this.formData = new FormData();
+	}
+
+	seccions: Seccion[] = [];
 	seccionSeleccionada = new Seccion();
-	seccionEditable = new Seccion();
 	newseccion = new Seccion();
 	esModificar: boolean;
 	MuestraForma = false;
 	closeResult: string;
 	index: number;
 	fileToUpload: File;
+	formData: FormData;
 
-	fileChange(input) {
-		this.readFiles(input.files);
-		console.log("1 wii");
 
-	}
-
-	readFile(file, reader, callback) {
-		console.log("3 wii");
-
-		reader.onload = () => {
-			callback(reader.result);
-			this.fileToUpload = reader.result;
-			console.log("4 wii");
-		}
-		reader.readAsDataURL(file);
-	}
-
-	readFiles(files, index = 0) {
-		console.log("2 wii");
-
-		let reader = new FileReader();
-		if (index in files) {
-			this.readFile(files[index], reader, (result) => {
-				var img = document.createElement("img");
-				img.src = result;
-
-				this.readFiles(files, index + 1);
-			});
-		} else {
-			this.changeDetectorRef.detectChanges();
+	fileChange(event) {
+		let fileList: FileList = event.target.files;
+		if (fileList.length > 0) {
+			let file: File = fileList[0];
+			this.fileToUpload = file;
 		}
 	}
 
-	seccions: Seccion[] = [
-		{ id: 11, nombre: 'Mr. Nice' },
-		{ id: 12, nombre: 'Narco' },
-		{ id: 13, nombre: 'Bombasto' },
-		{ id: 14, nombre: 'Celeritas' },
-		{ id: 15, nombre: 'Magneta' },
-		{ id: 16, nombre: 'RubberMan' },
-		{ id: 17, nombre: 'Dynama' },
-		{ id: 18, nombre: 'Dr IQ' },
-		{ id: 19, nombre: 'Magma' },
-		{ id: 20, nombre: 'Tornado' }
-	];
-
-	Guardar(pseccion: Seccion): void {
-		this.MuestraForma = false;
-
-		if (this.esModificar) {
-			this.setseccionhelper(this.seccionEditable, this.seccionSeleccionada);
-		}
-		else {
-			this.setseccionhelper(this.newseccion, pseccion);
-			this.seccions.push(this.newseccion);
-		}
-
-
+	getseccionsdb() {
+		this.http.get<Seccion[]>(this.baseUrl).subscribe(data => {
+			for (let o of data) {
+				this.seccions.push(o);
+			}
+		});
 	}
+
+	Guardar(seccion: Seccion): void {
+
+
+			this.MuestraForma = false;
+			var result = "";
+
+			if (this.esModificar) {
+				this.setseccionhelper(this.newseccion, this.seccionSeleccionada);
+				this.setformdata();
+				this.post(this.baseUrlmod);
+			}
+			else {
+				this.setseccionhelper(this.newseccion, seccion);
+				this.setformdata();
+				result = this.post(this.baseUrlalta);
+				if (result == "ok")
+					this.seccions.push(this.newseccion);
+				else { //mostrar error; 
+				}
+
+			}
+		
+	}
+
 	Alta(): void {
 		this.MuestraForma = true;
 		this.esModificar = false;
+		this.seccionSeleccionada = new Seccion();
+		this.newseccion = new Seccion();
 
-		this.setseccionhelper(this.seccionSeleccionada, new Seccion());
-		this.seccionEditable = new Seccion();
 	}
 	editar(seccion: Seccion): void {
 		this.MuestraForma = true;
 		this.esModificar = true;
-
 		this.setseccionhelper(this.seccionSeleccionada, seccion);
-		this.seccionEditable = seccion;
+		this.newseccion = seccion;
 	}
 	baja(seccion: Seccion, content): void {
-
 		this.index = this.seccions.indexOf(seccion);
-
 		this.modalService.open(content).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 			console.log(this.closeResult);
@@ -107,18 +105,49 @@ export class SeccionComponent implements OnInit {
 				case "baja": {
 					if (this.index !== -1) {
 						this.seccions.splice(this.index, 1);
+						this.newseccion = seccion;
+						this.setformdata();
+						this.post(this.baseUrlbaja);
 					}
 					return '';
 				}
 			}
-		}, (reason) => {
-		});
-
+		}, (reason) => { });
 	}
-    
+
+
 	setseccionhelper(secciondestino: Seccion, seccionorigen: Seccion): void {
 		secciondestino.nombre = seccionorigen.nombre;
 		secciondestino.id = seccionorigen.id;
+	}
+	setformdata(): void {
+		console.log("datos enviados a formdata: " + this.newseccion);
+		this.formData.append('id', String(this.newseccion.id));
+		this.formData.append('nombre', this.newseccion.nombre);
+		if (this.fileToUpload != null)//todo cambiar
+			this.formData.append('logo_principal', this.fileToUpload, this.fileToUpload.name);
+
+	}
+
+
+	public post(url): string {
+		const req = this.http.post(url,
+			{
+				headers: { 'Accept': 'application/json' },
+				id: this.newseccion.id,
+				nombre: this.newseccion.nombre,
+			})
+			.subscribe(
+			res => {
+				console.log(res);
+				return "ok";
+			},
+			err => {
+				console.log("Error occured");
+				return "nok";
+			}
+			);
+		return "nok";
 	}
 
 

@@ -1,4 +1,4 @@
-{{titulo}}
+﻿{{titulo}}
 <div>
   <button type='button' #alta (keyup.enter)="Alta()" (click)="Alta()">alta</button>
 
@@ -25,8 +25,8 @@
       <br />
       <br />
 
-      <input required type="file" id="marcaimagen" name="marcaimagen" #marcaimagen="ngModel" class="form-control" (change)="fileChange($event)" />
-      <div [hidden]="marcaimagen.valid || marcaimagen.pristine">
+      <input type="file" id="marcaimagen" name="marcaimagen" class="form-control" (change)="fileChange($event)" />
+      <div [hidden]="filevalidation">
        imagen required
       </div>
       <br />

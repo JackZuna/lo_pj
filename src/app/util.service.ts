@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Globals } from './globals'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx'
@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx'
 @Injectable()
 export class UtilService {
 
-	constructor(private globals: Globals) { }
+	constructor(private globals: Globals, private http: HttpClient  ) { }
 
 	calllogin(): void
 	{
@@ -29,5 +29,6 @@ export class UtilService {
       }
       );
     return "nok";
-  }
+	}
+  
 }

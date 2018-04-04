@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Marca } from '../models';
 import { UtilService } from '../util.service'
@@ -17,6 +17,7 @@ export class MarcaComponent implements OnInit {
 	constructor(private modalService: NgbModal,
 		private changeDetectorRef: ChangeDetectorRef,
 		private http: HttpClient  
+		, private utilService: UtilService
 	) { }
 
 	private baseUrl = "http://localhost:3000/marcas/get";  // web api URL
@@ -35,18 +36,20 @@ export class MarcaComponent implements OnInit {
 	marcaSeleccionada = new Marca();
 	newmarca = new Marca();
 	esModificar: boolean;
+	filevalidation: boolean = true;
 	MuestraForma = false;
 	closeResult: string;
 	index: number ;
-  fileToUpload: File;
-  formData: FormData;
+    fileToUpload: File;
+    formData: FormData;
 
 
 	fileChange(event) {
 		let fileList: FileList = event.target.files;
 		if (fileList.length > 0) {
 			let file: File = fileList[0];
-          this.fileToUpload = file;
+			this.fileToUpload = file;
+			this.filevalidation = true;
 		}
   }
 
@@ -59,23 +62,37 @@ export class MarcaComponent implements OnInit {
 	}
       
 	Guardar(marca: Marca): void {
-      this.MuestraForma = false;
-      var result = "";
+		if (this.isvalid()) {
 
-		if (this.esModificar) {
-          this.setmarcahelper(this.newmarca, this.marcaSeleccionada);
-          this.setformdata();
-          UtilService.post(this.baseUrlmod, this.formData);
+			this.MuestraForma = false;
+			var result = "";
+
+			if (this.esModificar) {
+				this.setmarcahelper(this.newmarca, this.marcaSeleccionada);
+				this.setformdata();
+				this.utilService.post(this.baseUrlmod, this.formData);
+			}
+			else {
+				this.setmarcahelper(this.newmarca, marca);
+				this.setformdata();
+				result = this.utilService.post(this.baseUrlalta, this.formData);
+				if (result == "ok")
+					this.marcas.push(this.newmarca);
+				else { //mostrar error; 
+				}
+
+			}
 		}
-		else {
-          this.setmarcahelper(this.newmarca, marca);
-          this.setformdata();
-          result = UtilService.post(this.baseUrlalta, this.formData);
-          if (result == "ok")
-            this.marcas.push(this.newmarca);
-          else
-            mostrar error;
-		}
+	}
+    //custom validation
+	isvalid(): boolean {
+		if (this.fileToUpload != null)
+			return true;
+		else
+			this.filevalidation = false;
+		    return false;
+
+
 	}
 	Alta(): void {
 		this.MuestraForma = true;
@@ -101,7 +118,7 @@ export class MarcaComponent implements OnInit {
 						this.marcas.splice(this.index, 1);
                       this.newmarca = marca;
                       this.setformdata();
-                      UtilService.post(this.baseUrlbaja, this.formData);
+					  this.utilService.post(this.baseUrlbaja, this.formData);
 					}
 					return '';
 				}
