@@ -23,7 +23,7 @@ import { mainComponent } from './vistas/main/main';
 //ABC
 import { MarcaComponent } from './marca/marca.component';
 import { SeccionComponent } from './seccion/seccion.component';
-import { SubSeccionComponent } from './subseccion/subseccion.component';
+import { SubseccionComponent } from './subseccion/subseccion.component';
 
 
 
@@ -62,19 +62,23 @@ const routes: LosRoute[] = [
 		path: 'seccion',
 		component: SeccionComponent,
 		losAuthActivate: false
+	},
+	{
+		path: 'subseccion',
+		component: SubseccionComponent,
+		losAuthActivate: false
 	}
 ];
 
 
 @NgModule({
 	declarations: [
-	  LoginComponent,
-	  AppComponent,
-	  mainComponent,
+	    LoginComponent,
+	    AppComponent,
+	    mainComponent,
 		MarcaComponent,
 		SeccionComponent,
-		SubSeccionComponent	  
-  ],
+		SubseccionComponent],
   imports: [
 	  BrowserModule,
 	  FormsModule,

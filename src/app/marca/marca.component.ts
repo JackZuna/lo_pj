@@ -71,11 +71,15 @@ export class MarcaComponent implements OnInit {
 				this.setmarcahelper(this.newmarca, this.marcaSeleccionada);
 				this.setformdata();
 				this.utilService.post(this.baseUrlmod, this.formData);
+				this.formData = new FormData();
+
 			}
 			else {
 				this.setmarcahelper(this.newmarca, marca);
 				this.setformdata();
 				result = this.utilService.post(this.baseUrlalta, this.formData);
+				this.formData = new FormData();
+
 				if (result == "ok")
 					this.marcas.push(this.newmarca);
 				else { //mostrar error; 
@@ -119,6 +123,8 @@ export class MarcaComponent implements OnInit {
                       this.newmarca = marca;
                       this.setformdata();
 					  this.utilService.post(this.baseUrlbaja, this.formData);
+					  this.formData = new FormData();
+
 					}
 					return '';
 				}

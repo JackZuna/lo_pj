@@ -3,9 +3,10 @@
     "",
     "\\app",
     "\\app\\marca",
+    "\\app\\subseccion",
     "\\app\\vistas",
-    "\\app\\vistas\\login"
+    "\\app\\vistas\\main"
   ],
-  "SelectedNode": "\\app\\app.component.html",
+  "SelectedNode": "\\app\\marca\\marca.component.ts",
   "PreviewInSolutionExplorer": false
 }

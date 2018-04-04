@@ -4,15 +4,32 @@
 
 
 </div>
-  <br />
-  <br />
+<br />
+<br />
+<form #mainForm="ngForm">
   <div *ngIf="MuestraForma">
+
     <label>Nombre:</label>
-    <input type="text" [(ngModel)]="seccionSeleccionada.nombre">
+    <input required minlength="2" type="text" id="nombre" name="nombre" #nombre="ngModel" [(ngModel)]="subseccionSeleccionada.nombre">
+    <div [hidden]="nombre.valid || nombre.pristine">
+      nombre required
+    </div>
     <br />
     <br />
-    <button type='button' #box (keyup.enter)="Guardar(seccionSeleccionada)" (click)="Guardar(seccionSeleccionada)">Guardar</button>
+    <label>Seccion:</label>
+    <select name="idseccion" [(ngModel)]="subseccionSeleccionada.id_seccion">
+      <option *ngFor="let item of seccions" [value]="item.id">{{item.nombre}}</option>
+    </select>
+    <br />
+    <br />
+
+    <button type='button' #box [disabled]="!mainForm.form.valid" (keyup.enter)="Guardar(subseccionSeleccionada)" (click)="Guardar(subseccionSeleccionada)">Guardar</button>
   </div>
+</form>
+<br />
+<br />
+<br />
+<br />
 <br />
 <br />
 
@@ -20,12 +37,17 @@
   <table>
     <tr>
       <td>nombre</td>
+      <td>seccionNombre</td>      
+      <td>opciones</td>
+
     </tr>
-    <tr *ngFor="let seccion of seccions">
-      <td>{{seccion.nombre}}</td>     
+    <tr *ngFor="let subseccion of subseccions">
+      <td>{{subseccion.nombre}}</td>
+      <td>{{subseccion.seccionNombre}}</td>
+
       <td>
-        <button type='button' #ideditar (keyup.enter)="editar(seccion)" (click)="editar(seccion)">editar</button>
-        <button type='button' #idbaja (keyup.enter)="baja(seccion,content)" (click)="baja(seccion,content)">baja</button>
+        <button type='button' #ideditar (keyup.enter)="editar(subseccion)" (click)="editar(subseccion)">editar</button>
+        <button type='button' #idbaja (keyup.enter)="baja(subseccion,content)" (click)="baja(subseccion,content)">baja</button>
       </td>
 
     </tr>
@@ -34,16 +56,15 @@
 
 </div>
 
-
 <ng-template #content let-c="close" let-d="dismiss">
-  <div class="modal-header"style="background-color: red;">
-    <h4 class="modal-title" >Baja</h4>
+  <div class="modal-header" style="background-color: red;">
+    <h4 class="modal-title">Baja</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <p>Realmente deasea dar de baja está seccion?</p>
+    <p>Realmente deasea dar de baja está subseccion?</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="c('baja')">Si</button>

@@ -47,6 +47,14 @@ export class mainComponent {
 					childs: [],
 					handle: null
 				}
+				, {
+					name: 'Subseccion',
+					path: 'subseccion',
+					icon: 'public',
+					isDropDown: false,
+					childs: [],
+					handle: null
+				}
 			],
 			handle: null
 		}

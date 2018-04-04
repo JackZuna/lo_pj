@@ -6,10 +6,12 @@ export class Seccion {
 	nombre: string;
 }
 
-export class SubSeccion {
+export class Subseccion {
 	id: number;
-	idSeccion: number;
+	id_seccion: number;
 	nombre: string;
+	seccionNombre: string;
+
 }
 
 export class Tema {
