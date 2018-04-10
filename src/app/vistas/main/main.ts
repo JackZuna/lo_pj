@@ -54,8 +54,29 @@ export class mainComponent {
 					isDropDown: false,
 					childs: [],
 					handle: null
+				}, {
+					name: 'Tema',
+					path: 'tema',
+					icon: 'public',
+					isDropDown: false,
+					childs: [],
+					handle: null
+				}, {
+					name: 'Celda',
+					path: 'celda',
+					icon: 'public',
+					isDropDown: false,
+					childs: [],
+					handle: null
 				}
 			],
+			handle: null
+		},{
+			name: 'wireframe',
+			path: 'Wireframes',
+			icon: 'public',
+			isDropDown: false,
+			childs: [],
 			handle: null
 		}
 	];

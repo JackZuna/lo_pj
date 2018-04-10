@@ -1,0 +1,87 @@
+﻿{{titulo}}
+<div>
+  <button type='button' #alta (keyup.enter)="Alta()" (click)="Alta()">alta</button>
+
+
+</div>
+<br />
+<br />
+<form #mainForm="ngForm">
+  <div *ngIf="MuestraForma">
+
+    <label>Nombre:</label>
+    <input required minlength="2" type="text" id="nombre" name="nombre" #nombre="ngModel" [(ngModel)]="temaSeleccionada.nombre">
+    <div [hidden]="nombre.valid || nombre.pristine">
+      nombre required
+    </div>
+    <br />
+    <br />
+    <label>Marca:</label>
+    <select name="idmarca" [(ngModel)]="temaSeleccionada.id_marca" (change)="getseccionsdb()">
+      <option *ngFor="let item of marcas" [value]="item.id">{{item.nombre}}</option>
+    </select>
+    <br />
+    <br />
+    <label>Seccion:</label>
+    <select name="idseccion" [(ngModel)]="temaSeleccionada.id_marca_subseccion">
+      <option *ngFor="let item of seccions" [value]="item.id">{{item.nombre}}</option>
+    </select>
+    <br />
+    <br />
+    <label>Lineamiento:</label><input name="options" type="radio" [value]="1" [(ngModel)]="temaSeleccionada.categoria"><br />
+    <label>Template:</label><input name="options" type="radio" [value]="2" [(ngModel)]="temaSeleccionada.categoria"><br />
+    <label>Recursos:</label><input name="options" type="radio" [value]="3" [(ngModel)]="temaSeleccionada.categoria"><br />
+
+    <button type='button' #box [disabled]="!mainForm.form.valid" (keyup.enter)="Guardar(temaSeleccionada)" (click)="Guardar(temaSeleccionada)">Guardar</button>
+  </div>
+</form>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<div>
+  <table>
+    <tr>
+      <td>nombre</td>
+      <td>categoria</td>      
+      <td>SubSeccionNombre</td>
+      <td>MarcaNombre</td>
+
+    </tr>
+    <tr *ngFor="let tema of temas">
+      <td>{{tema.nombre}}</td>
+      <td>{{tema.categoria}}</td>
+      <td>{{tema.SubSeccionNombre}}</td>
+      <td>{{tema.MarcaNombre}}</td>
+
+      <td>
+        <button type='button' #ideditar (keyup.enter)="editar(tema)" (click)="editar(tema)">editar</button>
+        <button type='button' #idbaja (keyup.enter)="baja(tema,content)" (click)="baja(tema,content)">baja</button>
+      </td>
+
+    </tr>
+
+  </table>
+
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header" style="background-color: red;">
+    <h4 class="modal-title">Baja</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Realmente deasea dar de baja está tema?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('baja')">Si</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('cancel')">No</button>
+
+  </div>
+</ng-template>
+

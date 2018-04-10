@@ -5,6 +5,12 @@ export class Seccion {
 	id: number;
 	nombre: string;
 }
+export class MarcaSubseccion {
+	id: number;
+	marca_id: number;
+	subseccion_id: number;
+	nombre: string;
+}
 
 export class Subseccion {
 	id: number;
@@ -16,14 +22,26 @@ export class Subseccion {
 
 export class Tema {
 	id: number;
-	idMarcaSubseccion: number;
+	id_marca_subseccion: number;
+	id_marca: number;
+
 	nombre: string;
+	categoria: string;
+	SubSeccionNombre: string;
+	MarcaNombre: string;
+
 }
 
 export class Celda {
 	id: number;
+	id_tema: number;
 	titulo: string;
+	nombre: string;
+
 	descripcion: string;
+    //luego seran varios
+	id_preview: number;
+	id_archivo: number;
 }
 
 export class Marca {

@@ -1,0 +1,95 @@
+﻿{{titulo}}
+<div>
+  <button type='button' #alta (keyup.enter)="Alta()" (click)="Alta()">alta</button>
+
+
+</div>
+<br />
+<br />
+<form #mainForm="ngForm">
+  <div *ngIf="MuestraForma">
+
+    <label>titulo:</label>
+    <input required minlength="2" type="text" id="titulo" name="titulo" #titulo="ngModel" [(ngModel)]="celdaSeleccionada.titulo">
+    <div [hidden]="titulo.valid || titulo.pristine">
+      titulo required
+    </div>
+    <br />
+    <br />
+    <label>descripcion:</label>
+    <input required minlength="2" type="text" id="descripcion" name="descripcion" #descripcion="ngModel" [(ngModel)]="celdaSeleccionada.descripcion">
+    <div [hidden]="descripcion.valid || descripcion.pristine">
+      descripcion required
+    </div>
+    <br />
+    <br />
+    <label>tema:</label>
+    <select name="idtema" [(ngModel)]="celdaSeleccionada.id_tema">
+      <option *ngFor="let item of temas" [value]="item.id">{{item.nombre}}</option>
+    </select>
+
+    <br />
+    <br />
+    <input type="file" id="marcaimagen" name="celdaarchivo" class="form-control" (change)="fileChangearchivo($event)" />
+    <div [hidden]="filevalidation">
+      imagen required
+    </div>
+    <br />
+    <br />
+    <input type="file" id="marcaimagen" name="celdapreview" class="form-control" (change)="fileChangeopreview($event)" />
+    <div [hidden]="filevalidation">
+      imagen required
+    </div>
+    <br />
+    <br />
+    <button type='button' #box [disabled]="!mainForm.form.valid" (keyup.enter)="Guardar(celdaSeleccionada)" (click)="Guardar(celdaSeleccionada)">Guardar</button>
+  </div>
+</form>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<div>
+  <table>
+    <tr>
+      <td>titulo</td>
+      <td>descripcion</td>      
+      <td>tema</td>
+
+    </tr>
+    <tr *ngFor="let celda of celdas">
+      <td>{{celda.titulo}}</td>
+      <td>{{celda.descripcion}}</td>
+      <td>{{celda.nombre}}</td>
+
+      <td>
+        <button type='button' #ideditar (keyup.enter)="editar(celda)" (click)="editar(celda)">editar</button>
+        <button type='button' #idbaja (keyup.enter)="baja(celda,content)" (click)="baja(celda,content)">baja</button>
+      </td>
+
+    </tr>
+
+  </table>
+
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header" style="background-color: red;">
+    <h4 class="modal-title">Baja</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Realmente deasea dar de baja está celda?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('baja')">Si</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('cancel')">No</button>
+
+  </div>
+</ng-template>
+

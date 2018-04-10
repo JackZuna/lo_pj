@@ -24,6 +24,10 @@ import { mainComponent } from './vistas/main/main';
 import { MarcaComponent } from './marca/marca.component';
 import { SeccionComponent } from './seccion/seccion.component';
 import { SubseccionComponent } from './subseccion/subseccion.component';
+import { TemaComponent } from './tema/tema.component';
+import { CeldaComponent } from './celda/celda.component';
+import { WireframeComponent } from './wireframes/wireframes.component';
+
 
 
 
@@ -68,6 +72,23 @@ const routes: LosRoute[] = [
 		component: SubseccionComponent,
 		losAuthActivate: false
 	}
+	,
+	{
+		path: 'celda',
+		component: CeldaComponent,
+		losAuthActivate: false
+	},
+	{
+		path: 'tema',
+		component: TemaComponent,
+		losAuthActivate: false
+	}
+    ,{
+		path: 'Wireframes',
+		component: WireframeComponent,
+		losAuthActivate: false
+	}
+    
 ];
 
 
@@ -78,7 +99,12 @@ const routes: LosRoute[] = [
 	    mainComponent,
 		MarcaComponent,
 		SeccionComponent,
-		SubseccionComponent],
+		SubseccionComponent,
+		TemaComponent,
+		CeldaComponent,
+		WireframeComponent
+
+	],
   imports: [
 	  BrowserModule,
 	  FormsModule,
