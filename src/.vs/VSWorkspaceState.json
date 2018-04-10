@@ -2,11 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\marca",
-    "\\app\\subseccion",
+    "\\app\\tema",
     "\\app\\vistas",
-    "\\app\\vistas\\main"
+    "\\app\\vistas\\main",
+    "\\app\\wireframes"
   ],
-  "SelectedNode": "\\app\\marca\\marca.component.ts",
+  "SelectedNode": "\\app\\tema\\tema.component.html",
   "PreviewInSolutionExplorer": false
 }
