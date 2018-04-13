@@ -1,24 +1,29 @@
 ﻿<div>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class=" navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">Features</a>
-        </li>
-        <li (click)="isNavbarCollapsed = !isNavbarCollapsed" class="nav-item dropdown">
+        <li *ngFor="let mseccion of mSeccion" 
+            (click)="isNavbarCollapsed = !isNavbarCollapsed" 
+            class="nav-item dropdown">
+
           <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
+            {{mseccion.nombre}}
           </a>
-          <div *ngIf="isNavbarCollapsed" style="display:block" class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+
+          <div  *ngIf="isNavbarCollapsed" style="display:inline-block; position:absolute" class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            <div *ngFor="let msubseccion of mseccion.subseccion">
+              <a  class="dropdown-item" > {{msubseccion.nombre}}</a>
+              <ul *ngIf="isNavbarCollapsed" class="dropdown-submenu"  >
+                <li class="dropdown-item" (click)="getTemas(msubseccion.id,1)"> LINEAMIENTOS </li>
+                <li class="dropdown-item" (click)="getTemas(msubseccion.id,2)"> TEMPLATE </li>
+                <li class="dropdown-item" (click)="getTemas(msubseccion.id,3)"> RECURSOS </li>
+              </ul>
+              <div class="dropdown-divider"></div>
+            </div >
           </div>
         </li>
+        
       </ul>
     </div>
   </nav>
@@ -44,27 +49,17 @@
     </div>
     <div style="    width: 75%;    height:  100%;    display: inline-block;    vertical-align: top;    margin-top: 15px;   ">
       
-      <div style="  display: inline-block;   width: 45%;    height: 100%; margin-left: 20px;">
-        <div id="titulotema" style="width:  100%; background-color:black; color:orange"> tema</div>
+      
+      <div *ngFor="let tema of mtema" style="  display: inline-block;   width: 45%;    height: 100%; margin-left: 20px;">
+        <div id="titulotema" style="width:  100%; background-color:black; color:orange"> {{tema.nombre}}</div>
 
-        <div style="  margin-top: 15px; background-color:lightgray; width:  100%;
+        <div *ngFor="let celda of tema.celdas"  style="  margin-top: 15px; background-color:lightgray; width:  100%;
                   height:210px; text-align: center;    padding-top: 20px;">
-          <div id="titulo"> celda </div>
-          <div id="descripcion"> descripcion </div>
-          <div id="preview"> preview </div>
+          <div id="titulo"> {{celda.titulo}} </div>
+          <div id="descripcion"> {{celda.descripcion}} </div>
+          <div id="preview"> {{celda.titulo}} </div>
         </div>
-      </div>
-
-      <div style="  display: inline-block;   width: 45%;    height: 100%; margin-left: 20px;">
-        <div id="titulotema" style="width:  100%; background-color:black; color:orange"> tema</div>
-
-        <div style="  margin-top: 15px; background-color:lightgray; width:  100%;
-                  height:210px; text-align: center;    padding-top: 20px;">
-          <div id="titulo"> celda </div>
-          <div id="descripcion"> descripcion </div>
-          <div id="preview"> preview </div>
-        </div>
-      </div>
+      </div>      
     </div>
   </div>
 </div>

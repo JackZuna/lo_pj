@@ -4,6 +4,14 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Tema } from '../models';
 import { Seccion } from '../models';
 import { Marca } from '../models';
+import { Menu } from '../models';
+import { SeccionMenu } from '../models';
+import { SubSeccionMenu } from '../models';
+
+import { Temas } from '../models';
+import { menuTema } from '../models';
+import { Celda } from '../models';
+
 
 import { UtilService } from '../util.service'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -24,28 +32,27 @@ export class WireframeComponent implements OnInit {
 		, private utilService: UtilService
 	) { }
 
-	private baseUrl = "http://localhost:3000/tema/get";  // web api URL
-	//private baseUrlgetseccion = "http://localhost:3000/seccion/get";  // web api URL
-	private baseUrlgetmarca = "http://localhost:3000/marcas/get";  // web api URL
-	private baseUrlgetseccion = "http://localhost:3000/tema/getMarcaSubseccion";  // web api URL
-    
+	private baseUrlmenu = "http://localhost:3000/wireframe/get";  // web api URL
+	private baseUrlTemaYCeldas = "http://localhost:3000/wireframe/gettema";  // web api URL
 
-	private baseUrlalta = "http://localhost:3000/tema/alta";  // web api URL
-	private baseUrlbaja = "http://localhost:3000/tema/baja";  // web api URL
-	private baseUrlmod = "http://localhost:3000/tema/cambio";  // web api URL
-	//baseUrlmod
+
+	
 
 
 	ngOnInit() {
-		this.gettemasdb();
-		//this.getseccionsdb();
-		this.getmarcasdb();
+		this.getmenu();
+		this.getTemas(1,1);
+		
 		this.formData = new FormData();
 	}
 
-	temas: Tema[] = [];
-	seccions: Seccion[] = [];
+	menu: Menu;
+	mSeccion: SeccionMenu[] = [];
 	marcas: Marca[] = [];
+
+	arreglotemas: Temas;
+	mtema: menuTema[] = [];
+	mcelda: Celda[] = [];
 
 	temaSeleccionada = new Tema();
 	newtema = new Tema();
@@ -58,36 +65,39 @@ export class WireframeComponent implements OnInit {
 
 	
 
-	gettemasdb() {
-		console.log('oli');
-		this.http.get<Tema[]>(this.baseUrl).subscribe(data => {
-			console.log(data);
-			for (let o of data) {
-				this.temas.push(o);
-			}
+	getmenu() {
+		this.http.get<Menu>(this.baseUrlmenu).subscribe(data => {			
+			this.menu = data;
+			this.mSeccion = this.menu.secciones;
+			console.log(this.menu);
 		});
 	}	
-	getmarcasdb() {
-		this.http.get<Marca[]>(this.baseUrlgetmarca).subscribe(data => {
-			for (let o of data) {
-				this.marcas.push(o);
-			}
-		});
-	}
 
-	getseccionsdb() {
-		this.seccions = [];
-		this.http.post<Seccion[]>(this.baseUrlgetseccion,
+	getTemas(pid, pcategoria) {
+		console.log(pid + " " + pcategoria);
+		const req = this.http.post<Temas>(this.baseUrlTemaYCeldas,
 			{
 				headers: { 'Accept': 'application/json' },
-				id: this.temaSeleccionada.id_marca
-			}).subscribe(data => {
-				
-			for (let o of data) {
-				this.seccions.push(o);
+				id: pid,
+				idc: pcategoria,
+			})
+			.subscribe(
+			res => {
+				this.arreglotemas = res
+				console.log(this.arreglotemas);
+				console.log(this.arreglotemas.temas);
+				this.mtema = this.arreglotemas.temas;
+				console.log(this.mtema[0]);
+			},
+			err => {
+				console.log("Error occured");
+				return "nok";
 			}
-		});
-	}
+			);
+		return "nok";
+	}	
+	
+
 	
 
 

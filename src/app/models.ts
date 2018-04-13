@@ -1,6 +1,32 @@
 ﻿import { Injectable } from '@angular/core';
 
 //modelos
+
+export class Menu {
+	secciones: SeccionMenu[];
+}
+export class SeccionMenu {
+	id: number;
+	nombre: string;
+	subseccion: SubSeccionMenu[];
+}
+export class SubSeccionMenu {
+	id: number;
+	nombre: string;
+}
+
+export class Temas {
+	temas: menuTema[];
+}
+export class menuTema {
+	id: number;
+	nombre: string;
+	celdas: Celda[];
+}
+
+
+
+
 export class Seccion {
 	id: number;
 	nombre: string;

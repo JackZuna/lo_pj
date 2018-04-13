@@ -2,11 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\app",
+    "\\app\\seccion",
     "\\app\\tema",
     "\\app\\vistas",
     "\\app\\vistas\\main",
     "\\app\\wireframes"
   ],
-  "SelectedNode": "\\app\\tema\\tema.component.html",
+  "SelectedNode": "\\app\\models.ts",
   "PreviewInSolutionExplorer": false
 }
